@@ -8,4 +8,5 @@ ansible-playbook -i hosts workers.yml
 # kubectl expose deploy nginx --port 80 --target-port 80 --type NodePort
 # kubectl get services
 
-
+# kubectl create -f Simple-Pod.yml
+# kubectl get pods
