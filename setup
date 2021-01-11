@@ -1,0 +1,11 @@
+ansible-playbook -i hosts initial.yml
+ansible-playbook -i hosts kube-dependencies.yml
+ansible-playbook -i hosts master.yml
+ansible-playbook -i hosts workers.yml
+
+# Copy .kube/config on master server to ~/.kube/config, or run on master server
+# kubectl create deployment nginx --image=nginx
+# kubectl expose deploy nginx --port 80 --target-port 80 --type NodePort
+# kubectl get services
+
+

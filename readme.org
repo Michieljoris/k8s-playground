@@ -1,0 +1,49 @@
+#+TITLE: k8s playground
+
+Basic k8s cluster on vultr following tutorial at [[https://www.digitalocean.com/community/tutorials/how-to-create-a-kubernetes-cluster-using-kubeadm-on-ubuntu-18-04][how-to-create-a-kubernetes-cluster-using-kubeadm-on-ubuntu-18-04]]
+
+
+* How to
+
+In terraform dir:
+
+#+BEGIN_SRC sh
+export TF_VAR_vultr_api_key=<api-key>
+terraform plan
+terraform apply
+# when done:
+terraform destroy
+#+END_SRC
+
+Add to/edit /etc/hosts with appropriate ip addresses:
+
+#+BEGIN_SRC sh
+45.76.120.32 k8s.server
+139.180.168.56 k8s.worker_1
+45.77.234.82 k8s.worker_2
+#+END_SRC
+
+If run before first:
+
+#+BEGIN_SRC sh
+ssh-keygen -f "/home/mj/.ssh/known_hosts" -R "k8s.server"
+ssh-keygen -f "/home/mj/.ssh/known_hosts" -R "k8s.worker_1"
+ssh-keygen -f "/home/mj/.ssh/known_hosts" -R "k8s.worker_2"
+#+END_SRC
+
+Log into each instance to add key to known_hosts:
+
+#+BEGIN_SRC sh
+ssh root@k8s.server
+ssh root@k8s.worker_1
+ssh root@k8s.worker_2
+#+END_SRC
+
+Run commands in setup:
+
+#+BEGIN_SRC sh
+ansible-playbook -i hosts initial.yml
+ansible-playbook -i hosts kube-dependencies.yml
+ansible-playbook -i hosts master.yml
+ansible-playbook -i hosts workers.yml
+#+END_SRC
